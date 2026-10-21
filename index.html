@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Para mi amor 💗</title>
+<style>
+:root{--pink:#f3a4c8;--hot:#e85c9c;--purple:#c6a4e8;--cream:#fffaf1;--ink:#512b48;--pale:#f1efff}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,'Times New Roman',serif;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.45;background-image:radial-gradient(#f2b7d5 1px,transparent 1px);background-size:25px 25px}
+main{width:min(430px,94vw);margin:0 auto;padding:28px 0 45px;position:relative;z-index:1}
+.decor{text-align:center;color:#f4a6cc;font-size:22px;letter-spacing:10px;margin:0 0 12px}
+.card{background:linear-gradient(145deg,#fff0f7,#f1efff);border:3px solid #e78abc;border-radius:20px;box-shadow:0 5px 0 #d8a1c2,0 10px 25px #9b51751c;padding:20px 17px;margin:16px 0;text-align:center;position:relative}
+h1,h2{margin:0 0 12px;font-weight:bold}h1{font-size:25px}h2{font-size:22px;background:linear-gradient(90deg,#f4a4c7,#c6a4e8);border:2px solid #8b547b;border-radius:10px;padding:10px 7px}
+p{line-height:1.55;font-size:15px}.small{font-size:12px}.btn{border:2px solid #8f587b;border-radius:9px;padding:9px 15px;background:#f5a2c6;color:#48243e;font-weight:bold;box-shadow:0 3px 0 #bd759e;margin:5px;font-size:14px}.btn.yes{background:#b9efc9}.btn.purple{background:#d6b6f3}.btn:active{transform:translateY(2px);box-shadow:none}
+input{font:inherit;text-align:center;border:2px solid #9c7899;border-radius:8px;padding:9px;width:85%;background:white;color:#43243c}
+.hidden{display:none!important}.status{min-height:24px;color:#b73579;font-weight:bold;font-size:14px}.gamegrid{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;margin:14px auto;max-width:330px;background:#d9a0c5;padding:5px;border-radius:8px}.tile{aspect-ratio:1;border-radius:3px;background:#fff0f7;display:grid;place-items:center;font-family:system-ui;font-size:14px}.tile.wall{background:#bd6b9d}.tile.path{background:#f7d9e8}.tile.me{background:#fff;color:#c62f7c}.tile.end{background:#d8f3df}.controls{display:grid;grid-template-columns:repeat(3,55px);justify-content:center;gap:6px;margin:10px}.controls button{height:42px}.landscape{height:260px;position:relative;overflow:hidden;border:2px solid #83b995;border-radius:10px;background:linear-gradient(#bceaff 0 72%,#a6e6b0 72%);margin:12px 0}.cloud{position:absolute;font-size:28px}.rock{position:absolute;font-size:25px}.home{position:absolute;top:12px;left:42%;font-size:36px}.person{position:absolute;bottom:5px;left:8%;font-size:24px;transition:left .2s,bottom .2s}.final{background:#2a1031;color:#fff1fa;border:3px solid #f0a0c9}.final h2{color:#4d2142}.final p{color:#fff0f8}.bigheart{font-size:40px;animation:pulse 1.2s infinite}@keyframes pulse{50%{transform:scale(1.15)}}.float{position:fixed;top:-30px;z-index:5;animation:fall 4s linear forwards;pointer-events:none}@keyframes fall{to{transform:translateY(110vh) rotate(300deg);opacity:0}}
+</style>
+</head>
+<body><main>
+<div class="decor">♡ ✿ ♡ ✿ ♡</div>
+<section class="card" id="welcome">
+<h2>Hola, mi amor 💗</h2><h1>¿Querés jugar un juego?</h1>
+<p>Preparé una pequeña aventura para vos, con mucho amor. Cada nivel es una forma de recordarte lo especial que sos para mí.</p>
+<button class="btn" onclick="start()">Sí, juguemos 💞</button>
+<button class="btn yes" onclick="start()">¡Sí, quiero! ♡</button>
+</section>
+<section class="card hidden" id="dateGate">
+<h2>La fecha secreta 💌</h2>
+<p>Para seguir, escribí la fecha especial que compartimos. Solo vos sabés cuál es 💗</p>
+<input id="datePassword" type="text" placeholder="DD/MM" autocomplete="off">
+<br><button class="btn purple" onclick="checkDate()">Desbloquear 💞</button>
+<div class="status" id="dateStatus"></div>
+</section>
+<section class="card hidden" id="quiz">
+<h2>La prueba de fuego ✨</h2><p><b>Antes de iniciar, tenés que demostrar que sos mi persona especial.</b></p>
+<p>¿Cuál es una de las cosas que más quiero hacer con vos?</p>
+<div><button class="btn" onclick="quizAnswer(false)">Ganar siempre 😌</button><button class="btn" onclick="quizAnswer(true)">Seguir creando recuerdos juntos 💗</button></div>
+<div class="status" id="quizStatus"></div>
+</section>
+<section class="card hidden" id="level1">
+<h2>Nivel 1: El laberinto 💜</h2><p class="small">Llevá el corazoncito hasta la salida. ¡No te rindas, mi amor!</p>
+<div id="maze" class="gamegrid"></div>
+<div class="controls"><span></span><button class="btn" onclick="step(0,-1)">↑</button><span></span><button class="btn" onclick="step(-1,0)">←</button><button class="btn" onclick="step(0,1)">↓</button><button class="btn" onclick="step(1,0)">→</button></div>
+<div class="status" id="mazeStatus">Usá las flechas para avanzar ♡</div>
+</section>
+<section class="card hidden" id="continue">
+<h2>¿Querés continuar la aventura?</h2><p>El camino a casa te espera… 🏡</p><button class="btn yes" onclick="show('level2')">Sí 💗</button><button class="btn" onclick="document.getElementById('continueStatus').textContent='Dale, mi amor, ¡un nivel más! 🥹'">No 😳</button><div id="continueStatus" class="status"></div>
+</section>
+<section class="card hidden" id="level2">
+<h2>Nivel 2: El camino a casa 🏡</h2><p class="small">Esquivá las piedras y llegá a la casita. Movete con los botones.</p>
+<div class="landscape" id="landscape" aria-label="Camino a casa">
+  <span class="cloud" style="left:8%;top:8%">☁️</span><span class="cloud" style="right:8%;top:15%">☁️</span>
+  <div id="walkGrid" style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(11,1fr);grid-template-rows:repeat(11,1fr);gap:2px;padding:8px"></div>
+</div>
+<div class="controls"><span></span><button class="btn" onclick="walk(0,-1)" aria-label="Arriba">↑</button><span></span><button class="btn" onclick="walk(-1,0)" aria-label="Izquierda">←</button><button class="btn" onclick="walk(0,1)" aria-label="Abajo">↓</button><button class="btn" onclick="walk(1,0)" aria-label="Derecha">→</button></div>
+<div class="status" id="walkStatus">¡Ya casi llegás! 💕</div>
+</section>
+<section class="card hidden final" id="ending">
+<div class="bigheart">💖</div><h2>Mi amor, gracias por formar parte de mi vida</h2>
+<p>Si llegaste hasta acá, quiero que te quede algo clarito: sos una persona muy especial para mí. Me hacés feliz con tus detalles, tus besos, tus risas y hasta con las cosas más simples.</p>
+<p>Ojalá pueda seguir compartiendo momentos con vos, cuidarte, hacerte reír y recordarte lo mucho que te amo. No hay juego que pueda explicar todo lo que siento, pero hice este para sacarte una sonrisa.</p>
+<h1>Te amo, mi amor ♡</h1><button class="btn yes" onclick="hearts()">Un beso virtual 😘</button>
+</section>
+<div class="decor">Hecho especialmente para vos · con amor infinito ♡</div>
+</main>
+<script>
+const ids=['welcome','dateGate','quiz','level1','continue','level2','ending'];
+function show(id){ids.forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+function start(){
+  x=1;y=1;mazeWon=false;
+  wx=0;wy=0;walkWon=false;
+  document.getElementById('mazeStatus').textContent='Usá las flechas para avanzar ♡';
+  document.getElementById('walkStatus').textContent='¡Ya casi llegás! 💕';
+  generateMaze();generateWalkMaze();draw();drawWalk();document.getElementById('datePassword').value='';document.getElementById('dateStatus').textContent='';show('dateGate');setTimeout(()=>document.getElementById('datePassword').focus(),250);
+}
+document.getElementById('datePassword').addEventListener('keydown',e=>{if(e.key==='Enter')checkDate()});
+function checkDate(){
+  const raw=document.getElementById('datePassword').value.trim();
+  // Acepta 24/03, 24-03, 24.03 o 2403.
+  const value=raw.replace(/\D/g,'');
+  if(value==='2403'){
+    document.getElementById('dateStatus').textContent='¡Fecha correcta, mi bebé! 💗';
+    setTimeout(()=>show('quiz'),250);
+  }else{
+    document.getElementById('dateStatus').textContent='Probá escribir 24/03 💗';
+  }
+}
+function quizAnswer(ok){if(ok){document.getElementById('quizStatus').textContent='¡Sabía que lo ibas a elegir! 💗';setTimeout(()=>{show('level1');draw()},700)}else{document.getElementById('quizStatus').textContent='Mmm, probá otra vez, mi amor 😘'}}
+let map=[];
+let x=1,y=1,mazeWon=false;
+function makeMaze(size){
+  const grid=Array.from({length:size},()=>Array(size).fill('#'));
+  const stack=[[1,1]]; grid[1][1]='.';
+  while(stack.length){
+    const [cx,cy]=stack[stack.length-1];
+    const options=[[0,-2],[2,0],[0,2],[-2,0]]
+      .map(([dx,dy])=>[cx+dx,cy+dy])
+      .filter(([nx,ny])=>nx>0&&ny>0&&nx<size-1&&ny<size-1&&grid[ny][nx]==='#');
+    if(!options.length){stack.pop();continue;}
+    const [nx,ny]=options[Math.floor(Math.random()*options.length)];
+    grid[(cy+ny)/2][(cx+nx)/2]='.';grid[ny][nx]='.';stack.push([nx,ny]);
+  }
+  return grid.map(row=>row.join(''));
+}
+function generateMaze(){map=makeMaze(11);x=1;y=1;mazeWon=false;}
+function draw(){let el=document.getElementById('maze');el.innerHTML='';map.forEach((r,yy)=>[...r].forEach((v,xx)=>{let d=document.createElement('div');d.className='tile '+(v==='#'?'wall':'path');if(xx===x&&yy===y){d.className+=' me';d.textContent='💗'}else if(xx===9&&yy===9){d.className+=' end';d.textContent='⭐'}else d.textContent='';el.appendChild(d)}))}
+function step(dx,dy){if(mazeWon)return;let nx=x+dx,ny=y+dy;if(map[ny]?.[nx]!==undefined&&map[ny][nx]!=='#'){x=nx;y=ny;draw()}if(x===9&&y===9){mazeWon=true;document.getElementById('mazeStatus').textContent='¡Lo lograste, encontraste la salida! 💖';setTimeout(()=>show('continue'),900)}}
+// Segundo nivel: movimiento por casillas, con obstáculos reales y llegada clara.
+let walkMap=[];
+let wx=0, wy=0, walkWon=false;
+function generateWalkMaze(){walkMap=makeMaze(11);wx=1;wy=1;walkWon=false;}
+function drawWalk(){
+  const grid=document.getElementById('walkGrid');
+  grid.innerHTML='';
+  walkMap.forEach((row,y)=>[...row].forEach((cell,x)=>{
+    const tile=document.createElement('div');
+    tile.style.cssText='display:grid;place-items:center;border-radius:6px;background:'+(cell==='#'?'#b6a3a9aa':'#ffffff35')+';font-size:clamp(14px,4vw,23px);min-width:0;min-height:0;';
+    if(x===wx&&y===wy){tile.textContent='🧍🏻';tile.style.background='#fff4fa';}
+    else if(x===9&&y===9){tile.textContent='🏡';tile.style.background='#d8f3df';}
+    else if(cell==='#'){tile.textContent='🪨';}
+    else {tile.textContent='';}
+    grid.appendChild(tile);
+  }));
+}
+function walk(dx,dy){
+  if(walkWon)return;
+  const nx=wx+dx, ny=wy+dy;
+  if(nx<0||ny<0||ny>=walkMap.length||nx>=walkMap[0].length)return;
+  if(walkMap[ny][nx]==='#'){document.getElementById('walkStatus').textContent='¡Cuidado con la piedra! Buscá otro camino 🪨';return;}
+  wx=nx;wy=ny;drawWalk();
+  if(wx===9&&wy===9){
+    walkWon=true;
+    document.getElementById('walkStatus').textContent='¡Llegaste a casa! Abrí tu sorpresa final 💗';
+    setTimeout(()=>show('ending'),700);
+  } else document.getElementById('walkStatus').textContent='¡Seguí, mi amor! Vas muy bien ✨';
+}
+document.addEventListener('keydown',e=>{
+  if(!e.key.startsWith('Arrow'))return;
+  if(!document.getElementById('level1').classList.contains('hidden')){
+    e.preventDefault();step(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0,e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);
+  } else if(!document.getElementById('level2').classList.contains('hidden')){
+    e.preventDefault();walk(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0,e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);
+  }
+});
+function hearts(){for(let i=0;i<45;i++){setTimeout(()=>{let h=document.createElement('div');h.className='float';h.textContent=['💗','💖','💕','🌸','❤️'][Math.floor(Math.random()*5)];h.style.left=Math.random()*100+'vw';h.style.fontSize=(16+Math.random()*22)+'px';h.style.animationDuration=(2.5+Math.random()*2)+'s';document.body.appendChild(h);setTimeout(()=>h.remove(),5000)},i*65)}}
+generateMaze();generateWalkMaze();draw();drawWalk();
+</script></body></html>
